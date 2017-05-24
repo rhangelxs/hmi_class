@@ -1,0 +1,70 @@
+---
+title: "Описание результатов"
+author: "Alexey Klimov"
+date: "19 05 2017"
+output: rmarkdown::github_document
+keep_md: yes
+---
+
+```{r setup, include=FALSE}
+options(scipen = 10, digits=2, OutDec = '.')
+library(tidyverse)
+```
+
+
+```{r cars}
+summary(cars)
+```
+
+# Как грамотно описать результаты вывода статистических пакетов
+
+## Для корреляций
+
+```{r}
+cor1 <- cor.test(cars$speed, cars$dist)
+```
+
+*При росте одной переменной вторая тоже увеличивается*
+
+С ростом стокрости значимо увеличивается пройденное расстояние ($r_{Пирсона}=`r cor1$estimate`$, $p=`r cor1$p.value`$, $N=`r nrow(cars)`$)
+
+## Проверка различий в двух групах (T-test Стьюдента)
+
+*Значение числовой переменной в друх группах отличается*
+
+Будем сравнивать 4 и 8 цилиндровые машины. В первую группу попадут машины где 4 цилидра, во вторую — где 8.
+
+```{r pressure}
+cars4_8 <- mtcars %>% filter(cyl == 4 | cyl == 8) %>% mutate(cyl=factor(cyl))
+A <- cars4_8 %>% filter(cyl == 4)
+B <- cars4_8 %>% filter(cyl == 8)
+t_test1 <- t.test(A$hp, B$hp)
+```
+
+В результате сравнения мощности двигателя между группами машин c 4 цилиндрами ($mean=`r A %>% summarise(mean=mean(hp))`$, $N=`r nrow(A)`$) и группой с 8 цилиндрами ($mean=`r B %>% summarise(mean=mean(hp))`$, $N=`r nrow(B)`$) с показало значимые различия $t(2,`r t_test1$parameter`)=`r t_test1$statistic`$, $p=`r t_test1$p.value`$. Мощность машин с 8 цилиндрами была выше `r B %>% summarise(mean=mean(hp))` л.с. против `r A %>% summarise(mean=mean(hp))` л.с.
+
+## LM
+
+*Выходная перменная зависит от одного или нескольких предикторов*
+
+```{r}
+lm1 <- lm(hp ~ cyl * am, data = mtcars)
+```
+
+
+```{r, results="asis"}
+lm1
+```
+
+Из вывода линейной модели нужно привести:
+*$R^2$, $N$, $p-value$, F-статистику*
+
+Для каждого регрессора (предиктора) желательно привести $\beta-коэффициента$ либо t-значние либо $SE$ + значимость
+
+Нагляднее всего график:
+
+```{r}
+library("sjPlot")
+sjPlot::sjp.int(lm1)
+```
+
