@@ -1,0 +1,123 @@
+---
+title: "Lab5. Рынок недвижимости в Москве"
+author: "Alexey Klimov"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  github_document:
+    toc: yes
+  html_document:
+    self_contained: no
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+always_allow_html: yes
+---
+
+# Текст задания доступен [по ссылке](https://docs.google.com/document/d/1J6iW5QnxXUECdo7fKcBOLXqgdiRpFc_fKhKM5uAmClk)
+
+# Загрузка нужных пакетов и хорошие настройки
+
+```{r setup}
+options(scipen = 10, digits = 2, OutDec = '.')
+knitr::opts_chunk$set(
+  cache = TRUE
+  , echo = FALSE
+  , autodep = TRUE
+  , encoding = "UTF-8"
+  , dpi = 96
+  , global.par = TRUE
+  , par = TRUE
+  , crop = TRUE
+  , comment = NA
+  )
+```
+
+```{r}
+library(pander)
+library(tidyverse) # Наше все
+library(forcats) # Работа с факторными переменными
+```
+
+# Служебные функции
+
+* `save_url` - для сохранения страниц с обработкой javascript
+* `write` - для сохранения файлов с одновременным созданием необходимых поддиректорий
+* `apply_function_to_column`, `apply_function_to_column` - применение функции к колонке и нескольким колонкам (аналог apply)
+* `remove_whitespace`
+
+```{r, include=FALSE}
+save_url <- function(url, file_name = NULL) {
+  library(RSelenium)
+  library(wdman)
+  tryCatch({
+    pjs <- wdman::phantomjs()
+    
+    rD <- RSelenium::rsDriver(browser = "phantomjs", verbose = FALSE)
+    
+    remDrv <- rD[["client"]]
+    remDrv$navigate(url)
+    
+    page <- remDrv$getPageSource()[[1]]
+    
+    if (!is.null(file_name)) {
+      write(page, file = file_name)
+    } else {
+      return(page)
+    }
+  }, finally = {
+    pjs$output()
+    pjs$stop()
+  })
+}
+
+write <- function(x, file = "data", ...) {
+  dir.create(file.path(dirname(file)), showWarnings = FALSE, recursive = TRUE)
+  base::write(x = x, file = file, ...)
+}
+
+apply_function_to_column <- function(data, varname, func) {
+  library(lazyeval)
+  varval <- lazyeval::interp(~func(varname), varname = as.name(varname), func = func)
+  data <- data %>% mutate_(.dots = setNames(list(varval), varname))
+  return(data)
+}
+
+apply_function_to_columns <- function(data, columns, func) {
+  for (i in columns) {
+    data <- apply_function_to_column(data, varname = i, func = func)
+  }
+return(data)
+}
+
+remove_whitespace <- function(x) {
+  library(stringr)
+  # x <- str_replace_all(x, " ", "") # Bad - didn't strip non-breakable spaces
+  x <- str_replace_all(x, "[[:space:]]", "");
+  return(x)
+}
+```
+
+# Загрузка данных
+
+Берем данные с restate.ru (исходный код страниц для Москвы и Санкт-Петербурга сохранен в папке `data/raw_html`).
+
+```{r}
+# Generate data
+moscow_url <- "http://www.restate.ru/graph/?id=1&sh=1&d=2&r1=2&o%5B%5D=1&o%5B%5D=2&o%5B%5D=3&curs%5B%5D=&curs%5B%5D=usd&curs%5B%5D=eur&period=1&relation=oil#gr1"
+moscow_filename <- "./data/raw_html/moscow.html"
+
+spb_url <- "http://www.restate.ru/graph/?id=1&sh=1&d=2&r1=1&o%5B%5D=1&o%5B%5D=2&o%5B%5D=3&curs%5B%5D=&curs%5B%5D=usd&curs%5B%5D=eur&period=1&relation=oil#gr1"
+spb_filename <- "./data/raw_html/spb.html"
+
+if (!file.exists(spb_filename)) write(save_url(spb_url), file = spb_filename)
+
+if (!file.exists(moscow_filename)) write(save_url(moscow_url), file = moscow_filename)
+```
+
+## Считываем данные из таблиц
+
+Здесь нам поможет пакет `rvest` и его функции `html_node`, `html_table`. Подсказка - исходная таблица находится в css-селекторе — "div.chart table".
+
+Затем данные и даже сами имена переменных нужно отчистить (например, начиная с такого `names(data) %>% stri_trans_tolower %>%
+  stri_trans_general("latin") %>% stri_trans_general("latin-ascii") %>% iconv(to = 'ASCII//TRANSLIT')`)
