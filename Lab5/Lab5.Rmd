@@ -33,10 +33,16 @@ knitr::opts_chunk$set(
   )
 ```
 
-```{r}
+Если следующий блок кода выдает ошибки, то нужно доставить необходимые библиотеки
+
+```{r, echo = TRUE}
 library(pander)
 library(tidyverse) # Наше все
 library(forcats) # Работа с факторными переменными
+library(rvest) # Считываем таблицы из интернета
+library(stringi) # Операции с кодировкой строк
+library(lubridate) # Работа с датами
+library(tsoutliers) # Определение выбросов во временных рядах
 ```
 
 # Служебные функции
@@ -117,7 +123,9 @@ if (!file.exists(moscow_filename)) write(save_url(moscow_url), file = moscow_fil
 
 ## Считываем данные из таблиц
 
-Здесь нам поможет пакет `rvest` и его функции `html_node`, `html_table`. Подсказка - исходная таблица находится в css-селекторе — "div.chart table".
+Здесь нам поможет пакет `rvest` и его функции `html_node`, `html_table`. Подсказка - исходная таблица находится в css-селекторе — "div.chart table". Делается это так: `html_table_node <- html_node(x = read_html(filename), css = "div.chart table")`
+и `realty_data <- html_table(html_table_node, fill = TRUE, dec = ",")`.
 
-Затем данные и даже сами имена переменных нужно отчистить (например, начиная с такого `names(data) %>% stri_trans_tolower %>%
+
+Затем данные и даже сами имена переменных нужно отчистить (например, я использовал пакет `stringi` начиная с такого `names(data) %>% stri_trans_tolower %>%
   stri_trans_general("latin") %>% stri_trans_general("latin-ascii") %>% iconv(to = 'ASCII//TRANSLIT')`)
