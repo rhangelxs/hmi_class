@@ -37,6 +37,7 @@ library(pander)
 library(tidyverse) # Наше все
 library(forcats) # Работа с факторными переменными
 library(rvest) # Считываем таблицы из интернета
+library(selectr) # Поддкржка xpath и css селекторов
 library(stringi) # Операции с кодировкой строк
 library(lubridate) # Работа с датами
 library(tsoutliers) # Определение выбросов во временных рядах
