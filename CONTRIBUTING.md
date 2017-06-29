@@ -71,6 +71,8 @@ We will document it in this file. If you have a question around how to do things
 
 First, please be noted that your project root folder will be located under [https://github.com/rhangelxs/hmi_class/tree/master/projects/current_year/](https://github.com/rhangelxs/hmi_class/tree/master/projects/)
 
+Second, you can add `README.md` (or similiar) as index file in your project root folder. It makes your project looks [like this](https://github.com/rhangelxs/hmi_class/tree/master/projects/example_project/). Sample `README.md` index file you can download here: [projects/example_project/README.md](https://github.com/rhangelxs/hmi_class/raw/master/projects/example_project/README.md).
+
 #### Root folder name
 
 Please name your root folder using comma separated surnames of the author's. So it will looks `Petrov, Sidirov`.
