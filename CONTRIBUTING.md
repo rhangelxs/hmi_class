@@ -69,7 +69,7 @@ File structure is important.
 
 We will document it in this file. If you have a question around how to do things, check to see if it is documented here. If it is not documented there, please ask your question.
 
-First, please be noted that your project root folder will be located under [github.com/rhangelxs/hmi_class/projects/current_year/](github.com/rhangelxs/hmi_class/projects/)
+First, please be noted that your project root folder will be located under [https://github.com/rhangelxs/hmi_class/tree/master/projects/current_year/](https://github.com/rhangelxs/hmi_class/tree/master/projects/)
 
 #### Root folder name
 
