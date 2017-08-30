@@ -1,0 +1,270 @@
+---
+title: "Lab1 - R basics"
+author: "Klimov, Titova"
+date: 'null'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightLines: yes
+      highlightStyle: github
+  ioslides_presentation:
+    df_print: paged
+    widescreen: yes
+  revealjs::revealjs_presentation:
+    widescreen: yes
+  beamer_presentation:
+    latex_engine: xelatex
+---
+
+Part 1. RStudio as the IDE for R
+========================================================
+
+- Free software
+
+- Object-oriented
+
+- Available for all major operating systems (Mac OS, Linux, Windows)
+
+- Can easily be extended through the use of user-defined functions
+
+- Widely used in political science, statistics, econometrics, actuarial sciences, sociology, finance, etc.
+
+For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
+
+---
+
+Howto run code
+========================================================
+
+```{r}
+summary(cars)
+```
+
+---
+
+Slide With Plot
+--------------------------------------------------------
+
+```{r, echo=FALSE, fig.show='hold', fig.align='center'}
+plot(cars)
+```
+
+---
+
+Part 2. Intro  in R Language - python-alike console 
+--------------------------------------------------------
+
+```{r}
+# A comment
+5 # print a number
+2+2 # calculations
+x <- 10 # store
+x # print
+(x <- 11) # store and print
+```
+
+---
+
+Vector - basic array
+--------------------------------------------------------
+
+**c**, which is short for concatenate (paste together) [https://cran.r-project.org/doc/contrib/Torfs+Brauer-Short-R-Intro.pdf]
+
+```{r}
+Ages <- c(32, 45, 15, 22, 29, 54, 35)  # store a specified vector to variable called "Ages"
+Ages
+```
+
+---
+
+Vector - basic array (2)
+--------------------------------------------------------
+Generate vector with **seq** and set it to **Participant_id**
+
+```{r}
+(Participant_id <- seq(1,7)) # define vector as a sequence (and print)
+(Participant_id <- (1:7)) # makes the same
+```
+
+Seq could have additional parameters: seq(1,20, **by=2**)
+
+```{r, echo=FALSE}
+(seq(1,20, by=2)) # seq can have additional arguments
+```
+
+---
+
+Operations with vectors
+--------------------------------------------------------
+Builtin statistics (mean, sd, statistical tests ...)
+
+```{r}
+mean(Ages)
+length(Ages)
+```
+
+```{r, echo=FALSE}
+TestingSkills <- c(5, 3, 4, 2, 5, 1, 4)
+```
+
+---
+
+Matrices
+--------------------------------------------------------
+```{r}
+mymatrix <- cbind(Participant_id, Ages, TestingSkills)
+is.matrix(mymatrix); is.vector(TestingSkills) # to stack expressions in one line, use ";"
+```
+
+Let's check how much rows and colums we have
+```{r}
+nrow(mymatrix)
+ncol(mymatrix)
+```
+
+---
+
+Matrices is good but dataframe is better
+--------------------------------------------------------
+Didn't work in matrics:
+```{r, error=TRUE}
+mymatrix$Participant_id
+```
+
+But works in Dataframes:
+```{r}
+as.data.frame(mymatrix)$Participant_id
+```
+
+```{r}
+mydataframe <- as.data.frame(mymatrix)
+```
+
+---
+
+Building a plot
+--------------------------------------------------------
+
+```{r, echo=FALSE}
+plot(mydataframe$Ages ,xlab="Ages"
+     , mydataframe$TestingSkills, ylab="TestingSkills"
+     , main="Proficiency"
+     )
+```
+
+***
+
+```{r eval=FALSE}
+plot(mydataframe$Ages, mydataframe$TestingSkills
+     , xlab="Ages", ylab="TestingSkills"
+     , main="Proficiency"
+     )
+```
+
+---
+
+Lists, dataframes
+--------------------------------------------------------
+
+Can be viewed with:
+
+* data
+* str(data)
+* View(data)
+* DT(data)
+* kable(data)
+
+---
+
+# Motor Trend Car Road dataset
+
+**Description** The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+```{r, echo=FALSE}
+#knitr::kable(mtcars, format = "html")
+DT::datatable(
+  mtcars,
+  fillContainer = FALSE, options = list(pageLength = 5)
+)
+```
+
+---
+
+Task 1
+----------------------------
+
+**Load *mtcars_data* in a variable and display its**
+- summary
+- last 5 rows
+
+---
+
+Task 2
+----------------------------
+
+- Display the number of variables
+- Display the number of records
+- Add a new column "#" and number all the rows
+
+---
+
+Task 3
+----------------------------
+
+- Describe (Display all the info for) car #7
+- Display the summary for column "qsec"
+- Display first 6 values of "qsec"
+
+---
+
+Task 4
+----------------------------
+For first column display:
+- values from 10 to 20 rows
+- values for rows #4, #7, #9 in one line
+
+---
+
+Task 5
+----------------------------
+
+- Copy *kilometers per liter* to a new column "kml2"
+- Declare new "kml2" variable from values of "miles per gallon", knowing that **_1 mile per liter = 0,425144 kilometer per liter_**
+
+---
+
+Task 6
+----------------------------
+
+- Display *True/False table* for all the rows of column *cyl*, checking if they are the same as 6
+( + Find the *Median* of cylinder numbers)
+
+---
+
+Task 7
+----------------------------
+
+- Display top 5 rows, where *disp* is lesser than 150 
+
+---
+
+Task 8
+----------------------------
+
+- Display *car names*, for which *disp* is greater than 200
+
+---
+
+Task 9
+----------------------------
+
+- Count the *Mean Value* of *wt*, rounded to the nearest 10th.
+
+---
+
+Task 10
+----------------------------
+
+- Count those car models, that have 8 cylinders and horsepower greater than 150.
+- From the subset above name a car with minimal *qsec*.

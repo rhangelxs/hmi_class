@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lab1 - R basics</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Klimov, Titova" />
+    <link href="libs/remark-css-0.0.1/example.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <script src="libs/datatables-binding-0.2/datatables.js"></script>
+    <link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lab1 - R basics
+### Klimov, Titova
+### null
+
+---
+
+
+Part 1. RStudio as the IDE for R
+========================================================
+
+- Free software
+
+- Object-oriented
+
+- Available for all major operating systems (Mac OS, Linux, Windows)
+
+- Can easily be extended through the use of user-defined functions
+
+- Widely used in political science, statistics, econometrics, actuarial sciences, sociology, finance, etc.
+
+For more details on authoring R presentations please visit &lt;https://support.rstudio.com/hc/en-us/articles/200486468&gt;.
+
+---
+
+Howto run code
+========================================================
+
+
+```r
+summary(cars)
+```
+
+```
+##      speed           dist       
+##  Min.   : 4.0   Min.   :  2.00  
+##  1st Qu.:12.0   1st Qu.: 26.00  
+##  Median :15.0   Median : 36.00  
+##  Mean   :15.4   Mean   : 42.98  
+##  3rd Qu.:19.0   3rd Qu.: 56.00  
+##  Max.   :25.0   Max.   :120.00
+```
+
+---
+
+Slide With Plot
+--------------------------------------------------------
+
+&lt;img src="lab1_files/figure-html/unnamed-chunk-2-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+Part 2. Intro  in R Language - python-alike console 
+--------------------------------------------------------
+
+
+```r
+# A comment
+5 # print a number
+```
+
+```
+## [1] 5
+```
+
+```r
+2+2 # calculations
+```
+
+```
+## [1] 4
+```
+
+```r
+x &lt;- 10 # store
+x # print
+```
+
+```
+## [1] 10
+```
+
+```r
+(x &lt;- 11) # store and print
+```
+
+```
+## [1] 11
+```
+
+---
+
+Vector - basic array
+--------------------------------------------------------
+
+**c**, which is short for concatenate (paste together) [https://cran.r-project.org/doc/contrib/Torfs+Brauer-Short-R-Intro.pdf]
+
+
+```r
+Ages &lt;- c(32, 45, 15, 22, 29, 54, 35)  # store a specified vector to variable called "Ages"
+Ages
+```
+
+```
+## [1] 32 45 15 22 29 54 35
+```
+
+---
+
+Vector - basic array (2)
+--------------------------------------------------------
+Generate vector with **seq** and set it to **Participant_id**
+
+
+```r
+(Participant_id &lt;- seq(1,7)) # define vector as a sequence (and print)
+```
+
+```
+## [1] 1 2 3 4 5 6 7
+```
+
+```r
+(Participant_id &lt;- (1:7)) # makes the same
+```
+
+```
+## [1] 1 2 3 4 5 6 7
+```
+
+Seq could have additional parameters: seq(1,20, **by=2**)
+
+
+```
+##  [1]  1  3  5  7  9 11 13 15 17 19
+```
+
+---
+
+Operations with vectors
+--------------------------------------------------------
+Builtin statistics (mean, sd, statistical tests ...)
+
+
+```r
+mean(Ages)
+```
+
+```
+## [1] 33.14286
+```
+
+```r
+length(Ages)
+```
+
+```
+## [1] 7
+```
+
+
+
+---
+
+Matrices
+--------------------------------------------------------
+
+```r
+mymatrix &lt;- cbind(Participant_id, Ages, TestingSkills)
+is.matrix(mymatrix); is.vector(TestingSkills) # to stack expressions in one line, use ";"
+```
+
+```
+## [1] TRUE
+```
+
+```
+## [1] TRUE
+```
+
+Let's check how much rows and colums we have
+
+```r
+nrow(mymatrix)
+```
+
+```
+## [1] 7
+```
+
+```r
+ncol(mymatrix)
+```
+
+```
+## [1] 3
+```
+
+---
+
+Matrices is good but dataframe is better
+--------------------------------------------------------
+Didn't work in matrics:
+
+```r
+mymatrix$Participant_id
+```
+
+```
+## Error in mymatrix$Participant_id: $ operator is invalid for atomic vectors
+```
+
+But works in Dataframes:
+
+```r
+as.data.frame(mymatrix)$Participant_id
+```
+
+```
+## [1] 1 2 3 4 5 6 7
+```
+
+
+```r
+mydataframe &lt;- as.data.frame(mymatrix)
+```
+
+---
+
+Building a plot
+--------------------------------------------------------
+
+![](lab1_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+
+***
+
+
+```r
+plot(mydataframe$Ages, mydataframe$TestingSkills
+     , xlab="Ages", ylab="TestingSkills"
+     , main="Proficiency"
+     )
+```
+
+---
+
+Lists, dataframes
+--------------------------------------------------------
+
+Can be viewed with:
+
+* data
+* str(data)
+* View(data)
+* DT(data)
+* kable(data)
+
+---
+
+# Motor Trend Car Road dataset
+
+**Description** The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+<div id="htmlwidget-32c20ccfa656aa0546bf" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-32c20ccfa656aa0546bf">{"x":{"filter":"none","fillContainer":false,"data":[["Mazda RX4","Mazda RX4 Wag","Datsun 710","Hornet 4 Drive","Hornet Sportabout","Valiant","Duster 360","Merc 240D","Merc 230","Merc 280","Merc 280C","Merc 450SE","Merc 450SL","Merc 450SLC","Cadillac Fleetwood","Lincoln Continental","Chrysler Imperial","Fiat 128","Honda Civic","Toyota Corolla","Toyota Corona","Dodge Challenger","AMC Javelin","Camaro Z28","Pontiac Firebird","Fiat X1-9","Porsche 914-2","Lotus Europa","Ford Pantera L","Ferrari Dino","Maserati Bora","Volvo 142E"],[21,21,22.8,21.4,18.7,18.1,14.3,24.4,22.8,19.2,17.8,16.4,17.3,15.2,10.4,10.4,14.7,32.4,30.4,33.9,21.5,15.5,15.2,13.3,19.2,27.3,26,30.4,15.8,19.7,15,21.4],[6,6,4,6,8,6,8,4,4,6,6,8,8,8,8,8,8,4,4,4,4,8,8,8,8,4,4,4,8,6,8,4],[160,160,108,258,360,225,360,146.7,140.8,167.6,167.6,275.8,275.8,275.8,472,460,440,78.7,75.7,71.1,120.1,318,304,350,400,79,120.3,95.1,351,145,301,121],[110,110,93,110,175,105,245,62,95,123,123,180,180,180,205,215,230,66,52,65,97,150,150,245,175,66,91,113,264,175,335,109],[3.9,3.9,3.85,3.08,3.15,2.76,3.21,3.69,3.92,3.92,3.92,3.07,3.07,3.07,2.93,3,3.23,4.08,4.93,4.22,3.7,2.76,3.15,3.73,3.08,4.08,4.43,3.77,4.22,3.62,3.54,4.11],[2.62,2.875,2.32,3.215,3.44,3.46,3.57,3.19,3.15,3.44,3.44,4.07,3.73,3.78,5.25,5.424,5.345,2.2,1.615,1.835,2.465,3.52,3.435,3.84,3.845,1.935,2.14,1.513,3.17,2.77,3.57,2.78],[16.46,17.02,18.61,19.44,17.02,20.22,15.84,20,22.9,18.3,18.9,17.4,17.6,18,17.98,17.82,17.42,19.47,18.52,19.9,20.01,16.87,17.3,15.41,17.05,18.9,16.7,16.9,14.5,15.5,14.6,18.6],[0,0,1,1,0,1,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,1,0,0,0,1],[1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1],[4,4,4,3,3,3,3,4,4,4,4,3,3,3,3,3,3,4,4,4,3,3,3,3,3,4,5,5,5,5,5,4],[4,4,1,1,2,1,4,2,2,4,4,3,3,3,4,4,4,1,2,1,1,2,2,4,2,1,2,2,4,6,8,2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mpg<\/th>\n      <th>cyl<\/th>\n      <th>disp<\/th>\n      <th>hp<\/th>\n      <th>drat<\/th>\n      <th>wt<\/th>\n      <th>qsec<\/th>\n      <th>vs<\/th>\n      <th>am<\/th>\n      <th>gear<\/th>\n      <th>carb<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+Task 1
+----------------------------
+
+**Load *mtcars_data* in a variable and display its**
+- summary
+- last 5 rows
+
+---
+
+Task 2
+----------------------------
+
+- Display the number of variables
+- Display the number of records
+- Add a new column "#" and number all the rows
+
+---
+
+Task 3
+----------------------------
+
+- Describe (Display all the info for) car #7
+- Display the summary for column "qsec"
+- Display first 6 values of "qsec"
+
+---
+
+Task 4
+----------------------------
+For first column display:
+- values from 10 to 20 rows
+- values for rows #4, #7, #9 in one line
+
+---
+
+Task 5
+----------------------------
+
+- Copy *kilometers per liter* to a new column "kml2"
+- Declare new "kml2" variable from values of "miles per gallon", knowing that **_1 mile per liter = 0,425144 kilometer per liter_**
+
+---
+
+Task 6
+----------------------------
+
+- Display *True/False table* for all the rows of column *cyl*, checking if they are the same as 6
+( + Find the *Median* of cylinder numbers)
+
+---
+
+Task 7
+----------------------------
+
+- Display top 5 rows, where *disp* is lesser than 150 
+
+---
+
+Task 8
+----------------------------
+
+- Display *car names*, for which *disp* is greater than 200
+
+---
+
+Task 9
+----------------------------
+
+- Count the *Mean Value* of *wt*, rounded to the nearest 10th.
+
+---
+
+Task 10
+----------------------------
+
+- Count those car models, that have 8 cylinders and horsepower greater than 150.
+- From the subset above name a car with minimal *qsec*.
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightLines": true,
+"highlightStyle": "github"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});
+(function() {var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler"); if (!r) return; s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }"; d.head.appendChild(s);})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
