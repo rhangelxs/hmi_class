@@ -1,0 +1,70 @@
+Lab2 - Multivariate dataframe example
+========================================================
+author: Klimov
+date: 
+autosize: true
+
+Task definition
+========================================================
+
+Mostly, we have interested what *predictors* from dataframe cause increasing (have an inference) the variable of interest.
+
+But time to time we didn't know much about nature of our data.
+
+Let's imagine you get dataset named **data_a.csv** and need to perform an overview (or explanatory analisys).
+
+Loading dataset
+========================================================
+
+Loading dataframe from file **data_a.csv**. Locate it in working directory. To check it, type ```getwd()``` and save it to variable called ```data```.
+
+```{r}
+# If need set right working dir by: setwd("~/Lab_R2")
+data <- read.csv("data_a.csv")
+```
+
+```{r}
+summary(data)
+```
+
+Check
+========================================================
+
+In dataframe we have ```output``` variable.
+
+In data we have different variables (`r pander::pander(names(data))
+`). How to list them?:
+
+```{r}
+names(data) # return a vector of variable names
+```
+
+Main symbol of today is tilde
+========================================================
+
+When you build more or less complex model in R you will need tilde sign (~). For exmaple linear model have such notation:
+
+```{r, eval=FALSE}
+lm(weight ~ group) # lm = Linear model
+```
+
+Please be free to copy *tilda* from field behind:
+
+```
+~
+```
+
+Outline
+========================================================
+
+- Check data structure (detect types of variables)
+- Fix variable types (convert strings to factors)
+- Perform correlation
+- Plot relationships between variables
+- Make lm or ANOVA analysis
+- Check interaction between variables
+
+Good final plot may looks like that
+========================================================
+
+![Result may looks like this](Result.pdf)
