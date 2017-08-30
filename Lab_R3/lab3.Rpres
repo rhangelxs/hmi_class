@@ -1,0 +1,144 @@
+Lab3 - Icon types
+========================================================
+author: Klimov, Titova
+date: 
+autosize: true
+
+Task1
+===
+![Natural vs Abstract](images/icons_examples.png)
+***
+Imagine you are designing a new interface to a document-processing package, which is to use icons for presentation. You are considering two styles of icon design and you wish to know which design will be easier for users to remember. One set of icons uses naturalistic images (based on a paper document metaphor), the other uses abstract images (see Figure). How might you design an experiment to help you decide which style to use? [Dix et al., 2005]
+
+Reading dataframe
+========================================================
+
+Dataframe originated from Alan Dix HCI 9.2 table.
+
+```{r}
+data <- read.csv2("data1_icons.csv", header=TRUE)
+data
+```
+
+Today we need imports
+====
+```{r}
+library(dplyr)
+library(sjPlot)
+```
+
+
+Structure cleanup
+===
+```{r}
+str(data)
+```
+
+Cleanup. Step 1
+===
+```{r}
+data_clean <- data %>% dplyr::filter(Abstract != "-")
+str(data_clean)
+
+data_clean <- data_clean %>% mutate(Abstract=as.numeric(as.character(data_clean$Abstract)))
+data <- data_clean
+```
+
+Summary
+===
+```{r}
+summary(data)
+```
+
+Prepare data
+===
+```{r}
+library(tidyverse)
+#data %>% separate(Presentation_order, c("first", "second"), sep = "_", remove=FALSE)
+data <- data %>% rowwise() %>% mutate(Participant_mean=mean(c(Natural, Abstract), na.rm=T))
+data <- data %>% mutate(Natural_diff=Natural - Participant_mean)
+data <- data %>% mutate(Abstract_diff=Abstract - Participant_mean)
+
+```
+
+
+Melting data (converting to long format)
+```{r}
+data_melt <- reshape2::melt(data = data, id.vars=c("Participant_number","Presentation_order"), value.name = "time", variable.name="icon_type")
+data_melt_diff <- data_melt %>% filter(icon_type == "Natural_diff" | icon_type == "Abstract_diff")
+data_melt_abs <- data_melt %>% filter(icon_type == "Natural" | icon_type == "Abstract")
+```
+
+
+===
+
+T-test
+===
+```{r, eval=FALSE}
+t.test(data$Natural, data$Abstract)
+```
+
+
+```{r}
+# TODO - split slides
+
+lm_model_abs <- lm(time ~ icon_type * Presentation_order, data = data_melt_abs)
+lm_model_abs2 <- lm(time ~ icon_type + Presentation_order * Participant_number, data = data_melt_abs)
+
+lm_model_diff <- lm(time ~ icon_type * Presentation_order, data = data_melt_diff)
+sjp.lm(lm_model_abs, show.summary = TRUE)
+sjp.lm(lm_model_diff, show.summary = TRUE)
+
+lmer_abs <- lme4::lmer(time ~ icon_type * Presentation_order + (1 | Participant_number), data = data_melt_abs)
+#lmer_abs2 <- lme4::lmer(time ~ icon_type + Presentation_order + (0 | Participant_number), data = data_melt_abs)
+lmer_abs2 <- lme4::lmer(time ~ icon_type * Presentation_order + (1 | Participant_number), data = data_melt_abs)
+
+sjp.lmer(lmer_abs2, sort.coef = "(Intercept)")
+
+sjp.lmer(lmer_abs)
+sjp.lmer(lmer_abs, type = "fe")
+sjp.lmer(lmer_abs, type = "fe.slope")
+sjp.lmer(lmer_abs, type = "pred.fe", vars="icon_type")
+
+sjp.lmer(lmer_abs2, type = "pred", vars="icon_type")
+sjp.lmer(lmer_abs2, type = "pred", vars="Presentation_order")
+
+sjp.int(lmer_abs2, type = "eff")
+
+sjp.int(update(lmer_abs2, data=data_melt_diff), type = "eff")
+```
+
+===
+
+```{r}
+model1 <- aov(time ~ (icon_type + Presentation_order) + Error(Participant_number), data=data_melt_diff)
+summary(model1)
+sjp.aov1(var.grp = data_melt_diff$icon_type, var.dep = data_melt_diff$time)
+sjp.aov1(var.grp = data_melt_diff$icon_type, var.dep = data_melt_diff$time, meansums = TRUE, show.summary = TRUE)
+```
+
+===
+```{r, echo=FALSE, fig.retina=TRUE}
+library(ggplot2)
+p <- ggplot(data_melt %>% filter(icon_type == "Participant_mean"), aes(Presentation_order, time))
+p + geom_boxplot(aes(fill = icon_type))
+```
+
+***
+```{r, eval=FALSE}
+library(ggplot2)
+p <- ggplot(data_melt, aes(Presentation_order, time))
+p + geom_boxplot(aes(fill = icon_type))
+```
+
+How this correlate with real world data?
+===
+```{r}
+
+```
+
+References
+===
+
+[1] A. Dix, et al *Human Computer Interaction 3rd Ed.*, Prentice Hall, 2005
+
