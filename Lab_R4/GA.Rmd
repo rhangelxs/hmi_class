@@ -1,0 +1,61 @@
+---
+title: "Google Analytics in R"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+## setup
+
+Sys.setenv(GA_AUTH_FILE = "./.httr-oauth2")
+
+library(googleAnalyticsR)
+library(dplyr)
+
+
+## This should send you to your browser to authenticate your email.
+## Authenticate with an email that has access to the Google Analytics View you want to use.
+tryCatch({
+  suppressWarnings(source("google_appkeys.R"))
+  message("Google Analytics API Auth secrets file found.")
+  }
+  , error = function(e) {}
+)
+
+tryCatch(
+  googleAnalyticsR::ga_auth()
+  , error = function(e) {
+    message("Google Analytics Auth failed.")
+    message(e)
+  }
+)
+
+#googleAnalyticsR::ga_auth(new_user = TRUE)
+#googleAuthR::gar_auth_service(GA_AUTH_FILE)
+
+## get your accounts
+## pick a profile with data to query
+
+ga_id <- ga_account_list()[1,'viewId']
+
+refs <- google_analytics_meta() %>% filter(grepl("*refer*", name, ignore.case = TRUE)) %>% .$name
+
+#google_analytics_4(ga_id)
+
+data <- google_analytics_4(ga_id, c("2016-11-01","2016-12-31"), 
+  dimensions=c("referralPath", 'fullReferrer', 'hasSocialSourceReferral', 'source','medium', 'sessionCount'), 
+  #segments = segment_ga4, 
+  metrics = c('sessions','bounces', 'avgPageLoadTime','pageviewsPerSession')
+  #, anti_sample = TRUE
+)
+```
+
+`str(data)` will have a dataframe
+
+```{r}
+
+```
+
