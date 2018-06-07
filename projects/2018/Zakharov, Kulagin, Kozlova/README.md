@@ -13,12 +13,11 @@
 «Ко второй» – веб-сервис для просмотра персонального расписания и поиска свободных аудиторий в корпусах НИУ ВШЭ.
 В рамках проекта была выдвинута гипотеза о положительном влиянии изменения интерфейса (добавления контрастного баннера в верху страницы для ввода почты пользователем), проведен слепой эксперимент, собраны данные с помощью Яндекс-статистики, произведены расчеты статистических критериев на основе полученных данных. Значения расчитанных критериев позволили принять основную гипотезу.
 
-![meme-futurama-visuals-over-text](https://user-images.githubusercontent.com/12518132/27714960-d740123a-5d3c-11e7-9994-d2ed6ee01cbb.jpeg)
+![kovtoroy](http://kovtoroy.ru/_nuxt/img/logo2.ddf6298.svg)
 
-## Content
+## Содержимое проекта
+Проект включание в себя: :blue_book: **отчет (report.pdf)**, :bookmark_tabs: **данные (dataset.csv)**, :computer: **код для вычислений в виде jupyter-тетрадки (script.ipynb)** и :sunrise_over_mountains: **призентации (presentation.pfd)**.
 
-This project includes: :blue_book: **report**, :bookmark_tabs: **dataset**, :computer: **script** and :sunrise_over_mountains: **presentation**.
-
-## Results
+## Результаты
 
 > Conclusions?
