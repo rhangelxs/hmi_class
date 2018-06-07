@@ -17,7 +17,7 @@
 
 
 ## Содержимое проекта
-Проект включание в себя: :blue_book: **отчет** (report.pdf), :bookmark_tabs: **данные** (dataset.csv), :computer: **код для вычислений в виде jupyter-тетрадки** (script.ipynb) и :sunrise_over_mountains: **презентации** (presentation.pdf).
+Проект включание в себя: :blue_book: **отчет** (report.pdf), :bookmark_tabs: **данные** (dataset.csv), :computer: **код для вычислений в виде jupyter-тетрадки** (script.ipynb) и :sunrise_over_mountains: **презентацию** (presentation.pdf).
 
 ## Результаты
 
