@@ -108,7 +108,7 @@ According to filenames, two main options are available:
 
 This section guides you through submitting an project for publication to repository by suggested method: `pull request`.
 
-Before making the right folder structore make a fork of repository, after find folder `project/year`, place your files in right places. Path of dataset may looks like `project/2017/Petrov, Sidorov/42design.csv` or `project/2017/Petrov, Sidorov/datset.csv`. After making all preparation, starting the pull request.
+Before making the right folder structure make a fork of repository, after find folder `project/year`, place your files in right places. Path of dataset may looks like `project/2017/Petrov, Sidorov/42design.csv` or `project/2017/Petrov, Sidorov/datset.csv`. After making all preparation, starting the pull request.
 
 #### Pull Request
 

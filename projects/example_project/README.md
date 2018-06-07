@@ -3,7 +3,7 @@
 Project was made by:
 
 * < insert: Full info about first author >
-* < insert: Full info about first author >
+* < insert: Full info about second author >
 
 
 ## Insert short description / summary
